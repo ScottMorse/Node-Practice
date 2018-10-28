@@ -35,10 +35,19 @@ function selectDb(dbName){
 //     dbCon.query("CREATE TABLE" + tbName)
 // }
 
-function createTable(tbName,argString){
-    args = " " + argString || ""
+function createTable(tbName,argString,createPrimaryKey){
+    argString = " " + argString || ""
+    createPrimaryKey = createPrimaryKey || false
+    if(createPrimaryKey){
+        if(argString){
+            argString = '(key INT AUTO_INCREMENT PRIMARY KEY, ' + argString.slice(1,argString.length)
+        }
+        else{
+            argString = '(key INT AUTO_INCREMENT PRIMARY KEY)'
+        }
+    }
     dbCon.query('CREATE TABLE ' + tbName + argString,(err,result) => {
-        if (err) throw err
+        if (err) console.log('Did NOT create table ' + tbName)
         console.log("Table " + tbName + " created")
     })
 }
